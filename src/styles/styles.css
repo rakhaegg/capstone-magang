@@ -1,0 +1,10 @@
+div#ctn-priority-matrix{
+    display: grid;   
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.card{
+    background-color: dodgerblue;
+    color: black;
+    padding: 1rem;
+    height: 4rem;
+}
