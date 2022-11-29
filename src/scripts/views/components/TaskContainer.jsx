@@ -7,59 +7,94 @@ import NoteiDBLevel2 from '../../data/dataNoteLevel2';
 import NoteiDBLevel3 from '../../data/dataNoteLevel3';
 import NoteiDBLevel4 from '../../data/dataNoteLevel4';
 
+let draggable;
 function TaskContainer({
-  title, arrData, idDialog, idForm,
+  title, arrData, idDialog, idForm, dataDate, containerLevel
 }) {
+  // Data From Database save to Memory
+  // Variable data from database is arrData
   const [data, setData] = useState([]);
   const inputElement = useRef();
-  const clickAddItem = () => {
-    const favDialog = document.getElementById(idDialog);
-    favDialog.showModal();
-  };
   useEffect(() => {
-    async function getDataFromDatabase() {
-      let dataFromDatabase = null;
-      if (idDialog === 'dialog-1') {
-        dataFromDatabase = await NoteiDB.getAllNote();
-      } else if (idDialog === 'dialog-2') {
-        dataFromDatabase = await NoteiDBLevel2.getAllNote();
-      } else if (idDialog === 'dialog-3') {
-        dataFromDatabase = await NoteiDBLevel3.getAllNote();
-      } else if (idDialog === 'dialog-4') {
-        dataFromDatabase = await NoteiDBLevel4.getAllNote();
-      }
-      setData(dataFromDatabase);
-    }
-    getDataFromDatabase();
+    const container = document.getElementById(containerLevel);
+    container.addEventListener('mouseover', () => {
+      container.addEventListener('dragstart', (e) => {
+        draggable = e.target;
+      });
+    });
+    container.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    }, false);
+    container.addEventListener('drop', (event) => {
+      event.target.appendChild(draggable);
+    });
   }, []);
+
+  /**
+   * Fungsi akan dirender pertama kali
+   * dan jika data yang baru dari database maka akan disimpan ke variable memory
+   * ! IMPORTANT
+   */
+
+  useEffect(() => {
+    console.log('render');
+    setData(arrData);
+  }, [arrData]);
+
+  /**
+   * Fungsi akan dirender pertama kali
+   * dan variable data mengalami perubahan
+   * atau jika user baru menambahkan data ke variable data
+   */
   useEffect(() => {
     inputElement.current = {
       id: uuidv4(),
       title: '',
       note: '',
-      date: new Date(),
+      create_date: dataDate,
+      due_date: new Date(),
+      status: false,
     };
   }, [data]);
+  /**
+   * Fungsi ini menutup dialog
+   */
   const closeDialog = () => {
     const containerDialog = document.getElementById(idDialog);
     const formSubmitData = document.getElementById(idForm);
     formSubmitData.reset();
     containerDialog.close();
   };
-
+  /**
+   * Fungsi ini untuk menginputkan data tanggal
+   * dari user ke objek inputElement.current
+   */
   const inputDate = (event) => {
     Object.assign(inputElement.current, {
-      date: event,
+      due_date: event,
     });
   };
+  /*
   const updateDataDate = (date) => {
     inputElement.current.date = date;
   };
+  */
+  /**
+   * Fungsi ini untuk input
+   * data title dan note
+   */
   const handleInput = (event) => {
     Object.assign(inputElement.current, {
       [event.target.name]: event.target.value,
     });
   };
+  /**
+   * Fungsi ini untuk menyimpan data yang baru
+   * diinput oleh user ke database
+   * dan render ulang component Task Container
+   * render ulang variabel yang dimemory atau
+   * langsung tampil
+   */
   const saveData = async (event) => {
     event.preventDefault();
     if (idDialog === 'dialog-1') {
@@ -71,19 +106,43 @@ function TaskContainer({
     } else if (idDialog === 'dialog-4') {
       await NoteiDBLevel4.putNote(inputElement.current);
     }
+
     setData((arr) => [...arr, inputElement.current]);
-    arrData.push(inputElement.current);
     event.target.reset();
-    console.log(arrData);
   };
-  console.log(data);
+
+  /**
+   * Fungsi untuk merubah task yang berstatus false ke true
+   */
+  const updateDataTask = async (dataItem) => {
+    // console.log('update task');
+    // console.log(inputElement.current.id);
+    const newData = data.map((item) => {
+      if (item.id === dataItem.id) {
+        const modifyItem = item;
+        modifyItem.status = true;
+        return modifyItem;
+      }
+      return item;
+    });
+    setData(newData);
+  };
+  console.log(`${idDialog}`, data);
   return (
-    <div id="ctn-level-1" className="card">
+    <div className="card" id={`parent-${containerLevel}`}>
       <div className="ctn-header">
         <h3>
           {title}
         </h3>
-        <button type="button" onClick={() => clickAddItem()}>Add Item</button>
+        <button
+          type="button"
+          onClick={() => {
+            const favDialog = document.getElementById(idDialog);
+            favDialog.showModal();
+          }}
+        >
+          Add Item
+        </button>
         <dialog id={idDialog}>
           <DialogContainer
             inputElement={inputElement}
@@ -92,17 +151,19 @@ function TaskContainer({
             inputDate={inputDate}
             updateData={setData}
             saveData={saveData}
-            updateDateDate={updateDataDate}
             idForm={idForm}
           />
         </dialog>
       </div>
-      <div>
+      <div id={containerLevel} className="child-card">
         {data !== []
           ? data.map((dataNote) => (
-            <div>
+            <div className="list-item" draggable="true">
+              <h4>{dataNote.id}</h4>
               <h4>{dataNote.title}</h4>
-              <h4>{dataNote.date.toLocaleDateString()}</h4>
+              <h4>{dataNote.status.toString()}</h4>
+              <h4>{dataNote.due_date.toLocaleDateString()}</h4>
+              <button type="button" onClick={() => updateDataTask(dataNote)}>Selesai</button>
             </div>
           ))
           : null }

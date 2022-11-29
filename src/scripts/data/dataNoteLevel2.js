@@ -16,5 +16,8 @@ const NoteiDBLevel2 = {
   async getAllNote() {
     return (await dbPromise).getAll(OBJECT_STORE_NAME);
   },
+  async getNoteById(id) {
+    return (await dbPromise).get(OBJECT_STORE_NAME, id);
+  },
 };
 export default NoteiDBLevel2;
