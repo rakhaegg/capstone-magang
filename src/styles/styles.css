@@ -1,4 +1,11 @@
-
+:root {
+    --ratio: 3.74;
+    --cta-color: rgb(0, 102, 254);
+    --light-color-bg: rgb(238, 241, 247);
+    --dark-color-bg: rgb(55, 65, 81);
+    --grey-color: rgb(107, 114, 128);
+    --leading: 0.025em;
+  }
 .card{
     background-color: dodgerblue;
     color: black;
@@ -12,3 +19,22 @@
     background-color: white;
     margin-top: 5px;
 }
+button{
+    display: block;
+    margin-top: 2rem;
+    width: calc(44px * var(--ratio));
+    height: 44px;
+    border-radius: calc(3px * var(--ratio));
+    border: none;
+    letter-spacing: calc(3 * var(--leading, 0.025em));
+    font-family: inherit;
+    color: var(--grey-color);
+    background-color: var(--light-color-bg);
+    font-size: large;
+    font-weight: 700;
+}
+button:focus {
+    outline: none;
+    border: 0.0625rem solid transparent;
+    box-shadow: 0 0 0 0.125rem #fff, 0 0 0 0.2rem var(--dark-color-bg);
+  }

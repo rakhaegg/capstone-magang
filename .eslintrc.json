@@ -20,7 +20,11 @@
         "no-underscore-dangle": 0,
         "no-restricted-globals": 0,
         "linebreak-style": 0,
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "jsx-a11y/label-has-associated-control": [ 2, {
+            "controlComponents": ["Form.Control"],
+            "depth": 3
+          }]
+        
 
     }
 }
