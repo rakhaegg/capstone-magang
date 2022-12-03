@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DialogContainer from './DialogContainer';
 import CardLevelOne from './CardLevel1';
+import CardLevelTwo from './CardLevelTwo';
 
 function TaskContainer({ dataFromDatabase, level }) {
   const [data, setData] = useState([]);
@@ -10,10 +11,14 @@ function TaskContainer({ dataFromDatabase, level }) {
   }, [dataFromDatabase]);
   return (
     <div>
-      <DialogContainer updateDataInMemory={setData} level={level} />
+      <DialogContainer updateDataInMemory={setData} level={level} data={data} />
       {
         level === 1
           ? <CardLevelOne data={data} /> : null
+      }
+      {
+        level === 2
+          ? <CardLevelTwo data={data} updateDataInMemory={setData} /> : null
       }
 
     </div>

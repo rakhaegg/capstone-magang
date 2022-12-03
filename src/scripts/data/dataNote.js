@@ -56,5 +56,18 @@ const NoteiDB = {
     }
     return (await dbPromise).get(object, id);
   },
+  async deleteNote(id, level) {
+    let object;
+    if (level === 1) {
+      object = OBJECT_STORE_NAME_1;
+    } else if (level === 2) {
+      object = OBJECT_STORE_NAME_2;
+    } else if (level === 3) {
+      object = OBJECT_STORE_NAME_3;
+    } else {
+      object = OBJECT_STORE_NAME_4;
+    }
+    return (await dbPromise).delete(object, id);
+  },
 };
 export default NoteiDB;

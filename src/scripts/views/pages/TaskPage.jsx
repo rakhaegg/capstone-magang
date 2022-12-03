@@ -8,13 +8,13 @@ function TaskPage() {
   return (
     <div id="ctn-priority-matrix">
       <Container>
-        <Row style={{ height: '50vh' }}>
-          <Col><TaskContainer dataFromDatabase={dataFromDatabase.level_1} level={1} /></Col>
-          <Col><TaskContainer dataFromDatabase={dataFromDatabase.level_2} level={2} /></Col>
+        <Row style={{ height: '70vh', overflow: 'auto' }}>
+          <Col md={6}><TaskContainer dataFromDatabase={dataFromDatabase.level_1} level={1} /></Col>
+          <Col md={6}><TaskContainer dataFromDatabase={dataFromDatabase.level_2} level={2} /></Col>
         </Row>
-        <Row style={{ height: '50vh' }}>
-          <Col><TaskContainer dataFromDatabase={dataFromDatabase.level_3} level={3} /></Col>
-          <Col><TaskContainer dataFromDatabase={dataFromDatabase.level_4} level={4} /></Col>
+        <Row style={{ height: '70vh', overflow: 'auto' }}>
+          <Col md={6}><TaskContainer dataFromDatabase={dataFromDatabase.level_3} level={3} /></Col>
+          <Col md={6}><TaskContainer dataFromDatabase={dataFromDatabase.level_4} level={4} /></Col>
         </Row>
       </Container>
     </div>

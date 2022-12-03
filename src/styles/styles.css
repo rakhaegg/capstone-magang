@@ -7,7 +7,6 @@
     --leading: 0.025em;
   }
 .card{
-    background-color: dodgerblue;
     color: black;
 }
 .child-card{
@@ -19,7 +18,7 @@
     background-color: white;
     margin-top: 5px;
 }
-button{
+/* button{
     display: block;
     margin-top: 2rem;
     width: calc(44px * var(--ratio));
@@ -32,7 +31,7 @@ button{
     background-color: var(--light-color-bg);
     font-size: large;
     font-weight: 700;
-}
+} */
 button:focus {
     outline: none;
     border: 0.0625rem solid transparent;

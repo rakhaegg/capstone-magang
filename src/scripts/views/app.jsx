@@ -28,7 +28,7 @@ function App() {
   return (
     <div>
       <Container>
-        <Row>
+        {/* <Row>
           <Col>
             <button type="button">Yesterday</button>
 
@@ -36,7 +36,7 @@ function App() {
           <Col>
             <button type="button">Tomorrow</button>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           {dataFromDatabase === undefined ? null : (
             <DataContext.Provider value={dataFromDatabase}>

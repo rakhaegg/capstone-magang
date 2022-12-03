@@ -1,21 +1,26 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import NoteiDB from '../../data/dataNote';
 
 class Timer extends React.Component {
   constructor(props) {
     super(props);
     const {
-      dataMinute, hak, beriHak, id, hapusHak,
+      data, hak, beriHak, hapusHak,
     } = this.props;
+    const {
+      number, second, id, done,
+    } = data;
     this.state = {
       hours: 0,
-      minutes: id === '5886e52e-b08a-4e2d-902a-8038d77820b7' ? 0 : dataMinute,
-      seconds: 10,
+      minutes: number,
+      seconds: second,
       hak,
       id,
       begin: false,
-      done: false,
+      done,
+      data,
     };
     this.beriHak = beriHak;
     this.hapusHak = hapusHak;
@@ -97,12 +102,27 @@ class Timer extends React.Component {
         this.setState({ hours: hours - 1 });
       }
     } else {
+      this.updateData();
+      console.log(this.state);
       clearInterval(this.timer);
       this.hapusHak();
     }
   };
 
+  updateData = async () => {
+    const {
+      data, minutes, seconds,
+    } = this.state;
+    data.number = minutes;
+    data.second = seconds;
+    if (minutes === 0 && seconds === 0) {
+      data.done = true;
+    }
+    await NoteiDB.putNote(data, 1);
+  };
+
   stopTimer = () => {
+    this.updateData();
     clearInterval(this.timer);
     this.hapusHak();
   };
@@ -116,12 +136,12 @@ class Timer extends React.Component {
 
         {begin === false && done === false
           ? (
-            <div>
-              <Button onClick={this.startTimer}>
-                start
+            <div className='my-2'>
+              <Button onClick={this.startTimer} variant="success" className='mx-1'>
+                Start
               </Button>
-              <Button onClick={this.stopTimer}>
-                stop
+              <Button onClick={this.stopTimer} variant="danger" className='mx-1'>
+                Stop
               </Button>
             </div>
           )
@@ -129,24 +149,24 @@ class Timer extends React.Component {
         {begin === true && hak !== ''
           ? (
             <Button onClick={this.stopTimer}>
-              stop
+              Stop
             </Button>
           ) : null}
 
         {
           minutes === 0 && seconds === 0
             ? (
-              <h1>
+              <p>
                 Selesai
-              </h1>
+              </p>
             )
             : (
-              <h1>
+              <p>
                 {minutes}
                 :
                 {' '}
                 {seconds}
-              </h1>
+              </p>
             )
         }
       </>
@@ -155,11 +175,10 @@ class Timer extends React.Component {
 }
 
 Timer.propTypes = {
-  dataMinute: PropTypes.number.isRequired,
   hak: PropTypes.string.isRequired,
   beriHak: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
   hapusHak: PropTypes.func.isRequired,
+  data: PropTypes.objectOf(PropTypes.any.isRequired).isRequired,
 };
 
 export default Timer;

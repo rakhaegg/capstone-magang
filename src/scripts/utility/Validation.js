@@ -22,24 +22,28 @@ const ValdationConfiguration = {
   _configLevel1(updateDataInMemory) {
     const formik = useFormik({
       initialValues: {
-        id: uuidv4(),
+        id: '',
         title: '',
         note: '',
         create_date: new Date().getTime(),
         due_date: new Date().getTime(),
         number: 25,
+        second: 0,
+        done: false,
       },
       validationSchema: Yup.object({
         title: Yup.string()
           .max(15, 'Must be 15 characters or less')
           .required('Required'),
         note: Yup.string().required('Required'),
-        number: Yup.number().positive().min(25),
+
       }),
       onSubmit: (values) => {
-        updateDataInMemory((prevData) => [...prevData, values]);
+        const temp = values;
+        temp.id = uuidv4();
+        updateDataInMemory((prevData) => [...prevData, temp]);
         async function saveDataToDabase() {
-          await NoteiDB.putNote(values, 1);
+          await NoteiDB.putNote(temp, 1);
         }
         saveDataToDabase();
         formik.resetForm();
@@ -50,7 +54,7 @@ const ValdationConfiguration = {
   _configLevelBasic(updateDataInMemory, level) {
     const formik = useFormik({
       initialValues: {
-        id: uuidv4(),
+        id: '',
         title: '',
         note: '',
         create_date: new Date().getTime(),
@@ -63,11 +67,21 @@ const ValdationConfiguration = {
         note: Yup.string().required('Required'),
       }),
       onSubmit: (values) => {
-        updateDataInMemory((prevData) => [...prevData, values]);
-        async function saveDataToDabase() {
-          await NoteiDB.putNote(values, level);
+        const temp = values;
+        temp.id = uuidv4();
+        async function check() {
+          const data = await NoteiDB.getAllNote(2);
+          const findData = data.find((item) => item.due_date === temp.due_date);
+          async function saveDataToDabase() {
+            await NoteiDB.putNote(temp, level);
+          }
+          if (findData === undefined) {
+            updateDataInMemory((prevData) => [...prevData, temp]);
+            saveDataToDabase();
+          }
         }
-        saveDataToDabase();
+        check();
+
         formik.resetForm();
       },
     });
@@ -76,7 +90,7 @@ const ValdationConfiguration = {
   _configLevel3(updateDataInMemory) {
     const formik = useFormik({
       initialValues: {
-        id: uuidv4(),
+        id: '',
         title: '',
         note: '',
         create_date: new Date().getTime(),
@@ -91,9 +105,11 @@ const ValdationConfiguration = {
         email: Yup.string().email('Invalid Email').required('Required'),
       }),
       onSubmit: (values) => {
-        updateDataInMemory((prevData) => [...prevData, values]);
+        const temp = values;
+        temp.id = uuidv4();
+        updateDataInMemory((prevData) => [...prevData, temp]);
         async function saveDataToDabase() {
-          await NoteiDB.putNote(values, 3);
+          await NoteiDB.putNote(temp, 3);
         }
         saveDataToDabase();
         formik.resetForm();

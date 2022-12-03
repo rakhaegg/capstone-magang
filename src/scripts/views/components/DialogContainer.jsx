@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  FloatingLabel, Form, Modal, Button,
+  FloatingLabel, Form, Modal, Button, Container, Row, Col,
 } from 'react-bootstrap';
 import ValdationConfiguration from '../../utility/Validation';
 
@@ -13,15 +13,23 @@ function DialogContainer({ updateDataInMemory, level }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
     return currentDate.getTime() < selectedDate.getTime();
   };
   const formik = ValdationConfiguration.init(level, updateDataInMemory);
+
   return (
-    <>
-      <button id="open_dialog" onClick={handleShow} type="button">Add Task</button>
+    <Container className='my-2'>
+      <Row>
+        <Col><h4 >Level {level}</h4></Col>
+        <Col><Button id="open_dialog" onClick={handleShow} type="button" variant="secondary">Add Task</Button></Col>
+      </Row>
+      <Row>
+          <Col>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sibuk apa kamu?</Modal.Title>
@@ -91,7 +99,7 @@ function DialogContainer({ updateDataInMemory, level }) {
                     selected={startDate}
                     includeDates={[new Date()]}
                     showTimeSelect
-                    timeIntervals={15}
+                    timeIntervals={5}
                     filterTime={filterPassedTime}
                     name="due_date"
                     id="due_date"
@@ -170,7 +178,9 @@ function DialogContainer({ updateDataInMemory, level }) {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+          </Col>
+        </Row>
+      </Container>
   );
 }
 
