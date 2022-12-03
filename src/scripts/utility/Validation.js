@@ -6,7 +6,7 @@ import NoteiDB from '../data/dataNote';
 const ValdationConfiguration = {
   init(level, updateDataInMemory) {
     if (level === 1) {
-      return this._configLevelBasic(updateDataInMemory, level);
+      return this._configLevel1(updateDataInMemory);
     }
     if (level === 2) {
       return this._configLevelBasic(updateDataInMemory, level);
@@ -19,7 +19,34 @@ const ValdationConfiguration = {
     }
     return null;
   },
-
+  _configLevel1(updateDataInMemory) {
+    const formik = useFormik({
+      initialValues: {
+        id: uuidv4(),
+        title: '',
+        note: '',
+        create_date: new Date().getTime(),
+        due_date: new Date().getTime(),
+        number: 25,
+      },
+      validationSchema: Yup.object({
+        title: Yup.string()
+          .max(15, 'Must be 15 characters or less')
+          .required('Required'),
+        note: Yup.string().required('Required'),
+        number: Yup.number().positive().min(25),
+      }),
+      onSubmit: (values) => {
+        updateDataInMemory((prevData) => [...prevData, values]);
+        async function saveDataToDabase() {
+          await NoteiDB.putNote(values, 1);
+        }
+        saveDataToDabase();
+        formik.resetForm();
+      },
+    });
+    return formik;
+  },
   _configLevelBasic(updateDataInMemory, level) {
     const formik = useFormik({
       initialValues: {

@@ -128,10 +128,41 @@ function DialogContainer({ updateDataInMemory, level }) {
                 )
                 : null
             }
+            {
+              level === 1 ? (
+                <Form.Group className="mb-3">
+                  <Form.Floating>
+                    <Form.Control
+                      id="number"
+                      type="number"
+                      name="number"
+                      onChange={formik.handleChange}
+                      value={formik.values.number}
+                      onBlur={formik.handleBlur}
+                      isInvalid={!!formik.errors.number}
+                      isValid={
+                        formik.errors.number === undefined
+                        && formik.values.number !== ''
+                      }
+                    />
+                    <label htmlFor="number">Minute</label>
+                    <Form.Control.Feedback type="invalid">
+                      Minimal 25 minute yaaa
+                    </Form.Control.Feedback>
+                  </Form.Floating>
+                </Form.Group>
+              ) : null
+            }
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleClose();
+              formik.resetForm();
+            }}
+          >
             Close
           </Button>
           <Button variant="primary" type="submit" onClick={formik.handleSubmit}>
@@ -142,14 +173,10 @@ function DialogContainer({ updateDataInMemory, level }) {
     </>
   );
 }
-/*
+
 DialogContainer.propTypes = {
-  saveData: PropTypes.func.isRequired,
-  handleInput: PropTypes.func.isRequired,
-  inputElement: PropTypes.shape(PropTypes.any.isRequired).isRequired,
-  closeDialog: PropTypes.func.isRequired,
-  idForm: PropTypes.string.isRequired,
-  inputDate: PropTypes.func.isRequired,
+  updateDataInMemory: PropTypes.func.isRequired,
+  level: PropTypes.number.isRequired,
 };
-*/
+
 export default DialogContainer;
