@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Button, Card, Col, Container, Modal, Row, Alert
+  Button, Card, Col, Container, Row, Alert,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import NoteiDB from '../../data/dataNote';
@@ -31,7 +31,7 @@ function AlertContainer({ item, updateDataInMemory }) {
           console.log('here');
           showModalShow(true);
           clearInterval(interval);
-        }else {
+        } else {
           clearInterval(interval);
           showModalShow(true);
         }
