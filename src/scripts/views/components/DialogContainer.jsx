@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -13,7 +13,6 @@ function DialogContainer({ updateDataInMemory, level }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
@@ -22,97 +21,94 @@ function DialogContainer({ updateDataInMemory, level }) {
   const formik = ValdationConfiguration.init(level, updateDataInMemory);
 
   return (
-    <Container className='my-2'>
+    <Container className="my-2">
       <Row>
-        <Col><h4 >Level {level}</h4></Col>
+        <Col>
+          <h4>
+            Level
+            {' '}
+            {level}
+          </h4>
+        </Col>
         <Col><Button id="open_dialog" onClick={handleShow} type="button" variant="secondary">Add Task</Button></Col>
       </Row>
       <Row>
-          <Col>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Sibuk apa kamu?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form id="form">
-            <Form.Group className="mb-3">
-              <FloatingLabel>
-
-                <Form.Control
-                  id="title"
-                  name="title"
-                  type="text"
-                  placeholder="Enter Title"
-                  onChange={formik.handleChange}
-                  value={formik.values.title}
-                  onBlur={formik.handleBlur}
-                  className={
-                    formik.touched.title && formik.errors.title ? 'error' : null
-                  }
-                  isInvalid={!!formik.errors.title}
-                  isValid={
+        <Col>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Sibuk apa kamu?</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form id="form">
+                <Form.Group className="mb-3">
+                  <FloatingLabel>
+                    <Form.Control
+                      id="title"
+                      name="title"
+                      type="text"
+                      placeholder="Enter Title"
+                      onChange={formik.handleChange}
+                      value={formik.values.title}
+                      onBlur={formik.handleBlur}
+                      isInvalid={!!formik.errors.title}
+                      isValid={
                     formik.errors.title === undefined
                     && formik.values.title !== ''
                   }
-                />
-                <label htmlFor="title">Title</label>
-              </FloatingLabel>
-              <Form.Control.Feedback type="invalid">
-                {formik.errors.title}
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="valid" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Floating>
-                <Form.Control
-                  id="note"
-                  name="note"
-                  as="textarea"
-                  placeholder="Enter Title"
-                  onChange={formik.handleChange}
-                  value={formik.values.note}
-                  onBlur={formik.handleBlur}
-                  className={
-                    formik.touched.note && formik.errors.note ? 'error' : null
-                  }
-                  isInvalid={!!formik.errors.note}
-                  isValid={
+                    />
+                    <label htmlFor="title">Title</label>
+                  </FloatingLabel>
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.title}
+                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="valid" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Floating>
+                    <Form.Control
+                      id="note"
+                      name="note"
+                      as="textarea"
+                      placeholder="Enter Title"
+                      onChange={formik.handleChange}
+                      value={formik.values.note}
+                      onBlur={formik.handleBlur}
+                      isInvalid={!!formik.errors.note}
+                      isValid={
                     formik.errors.note === undefined
                     && formik.values.note !== ''
                   }
-                  style={{ height: '100px' }}
-                />
-                <label htmlFor="note">Note</label>
-
-              </Form.Floating>
-              <Form.Control.Feedback type="invalid">
-                {formik.errors.note}
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="valid" />
-            </Form.Group>
-            {level === 2
-              ? (
-                <Form.Group className="mb-3">
-                  <DatePicker
-                    className="form-control"
-                    selected={startDate}
-                    includeDates={[new Date()]}
-                    showTimeSelect
-                    timeIntervals={5}
-                    filterTime={filterPassedTime}
-                    name="due_date"
-                    id="due_date"
-                    onChange={(date) => {
-                      formik.setFieldValue('due_date', date.getTime());
-                      setStartDate(date);
-                    }}
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
+                      style={{ height: '100px' }}
+                    />
+                    <label htmlFor="note">Note</label>
+                  </Form.Floating>
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.note}
+                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="valid" />
                 </Form.Group>
-              )
-              : null}
-            {
+                {level === 2
+                  ? (
+                    <Form.Group className="mb-3">
+                      <DatePicker
+                        className="form-control"
+                        selected={startDate}
+                        includeDates={[new Date()]}
+                        showTimeSelect
+                        timeIntervals={5}
+                        filterTime={filterPassedTime}
+                        name="due_date"
+                        id="due_date"
+                        onChange={(date) => {
+                          formik.setFieldValue('due_date', date.getTime());
+                          setStartDate(date);
+                        }}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                      />
+                    </Form.Group>
+                  )
+                  : null}
+                {
               level === 3
                 ? (
                   <Form.Group className="mb-3">
@@ -136,7 +132,7 @@ function DialogContainer({ updateDataInMemory, level }) {
                 )
                 : null
             }
-            {
+                {
               level === 1 ? (
                 <Form.Group className="mb-3">
                   <Form.Floating>
@@ -161,26 +157,26 @@ function DialogContainer({ updateDataInMemory, level }) {
                 </Form.Group>
               ) : null
             }
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              handleClose();
-              formik.resetForm();
-            }}
-          >
-            Close
-          </Button>
-          <Button variant="primary" type="submit" onClick={formik.handleSubmit}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
-          </Col>
-        </Row>
-      </Container>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  handleClose();
+                  formik.resetForm();
+                }}
+              >
+                Close
+              </Button>
+              <Button variant="primary" type="submit" onClick={formik.handleSubmit}>
+                Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

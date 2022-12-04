@@ -51,31 +51,40 @@ function App() {
 }
 function AppContainer() {
   return (
-    <main>
-      <header>
-        {/* <nav>
-          <ul>
-            <li id="home-click"><Link to="/">Home</Link></li>
-            <li><Link to="/archive">Archive</Link></li>
-          </ul>
-        </nav> */}
-        <Navbar bg="light" expand="lg">
-          <Container>
-            <Navbar.Brand>BoosTask</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link><Link to="/">Home</Link></Nav.Link>
-                <Nav.Link><Link to="/archive">Archive</Link></Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      </header>
-      <Routes>
-        <Route path="/" element={<App />} />
-      </Routes>
-    </main>
+    <>
+      <main>
+        <header>
+          {/* <nav>
+      <ul>
+        <li id="home-click"><Link to="/">Home</Link></li>
+        <li><Link to="/archive">Archive</Link></li>
+      </ul>
+    </nav> */}
+          <Navbar bg="light" expand="lg">
+            <Container>
+              <Navbar.Brand>BoosTask</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href="/archive">Archive</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+        </header>
+        <Routes>
+          <Route path="/" element={<App />} />
+        </Routes>
+      </main>
+      <footer className="bg-light text-center text-lg-start">
+
+        <div className="text-center p-3" style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+          © 2022 Copyright:
+          <a className="text-dark" href="https://mdbootstrap.com/"> BoostTask</a>
+        </div>
+      </footer>
+    </>
   );
 }
 export { AppContainer, App };

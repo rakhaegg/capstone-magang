@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import NoteiDB from '../../data/dataNote';
 
@@ -136,11 +136,11 @@ class Timer extends React.Component {
 
         {begin === false && done === false
           ? (
-            <div className='my-2'>
-              <Button onClick={this.startTimer} variant="success" className='mx-1'>
+            <div className="my-2">
+              <Button onClick={this.startTimer} variant="success" className="mx-1">
                 Start
               </Button>
-              <Button onClick={this.stopTimer} variant="danger" className='mx-1'>
+              <Button onClick={this.stopTimer} variant="danger" className="mx-1">
                 Stop
               </Button>
             </div>
@@ -156,17 +156,18 @@ class Timer extends React.Component {
         {
           minutes === 0 && seconds === 0
             ? (
-              <p>
+
+              <Card.Text>
                 Selesai
-              </p>
+              </Card.Text>
             )
             : (
-              <p>
+              <Card.Text>
                 {minutes}
                 :
                 {' '}
                 {seconds}
-              </p>
+              </Card.Text>
             )
         }
       </>

@@ -1,24 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Card, Container, Row, Col, Button,
+  Button, Card, Container, Row, Col,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import Timer from './Timer';
 import NoteiDB from '../../data/dataNote';
 
-function CardLevelOne({ data, updateDataInMemory }) {
-  const [hak, setHak] = useState('');
-  const beriHak = (id) => {
-    setHak(id);
-  };
-  const hapusHak = () => {
-    setHak('');
-  };
+function CardLevelTri({ data, updateDataInMemory }) {
   const deleteData = (item) => {
     updateDataInMemory((dataInMemory) => dataInMemory
       .filter((itemData) => itemData.id !== item.id));
     async function deleteDataFromDatabase() {
-      await NoteiDB.deleteNote(item.id, 1);
+      await NoteiDB.deleteNote(item.id, 3);
     }
     deleteDataFromDatabase();
   };
@@ -49,26 +41,26 @@ function CardLevelOne({ data, updateDataInMemory }) {
                 </Col>
                 <Col>
                   <Card.Body>
-                    <Card.Title>Timer Task</Card.Title>
-                    <Timer
-                      hak={hak}
-                      beriHak={beriHak}
-                      hapusHak={hapusHak}
-                      data={item}
-                    />
+                    <Card.Subtitle>Informasi</Card.Subtitle>
+                    <Card.Text>
+                      Kirim task ke
+                      <b>
+                        {' '}
+                        {item.email}
+                      </b>
+                      {' '}
+                    </Card.Text>
                   </Card.Body>
                 </Col>
               </Row>
             </Container>
           </Card>
-        ))
-        : null}
+        )) : null }
     </div>
   );
 }
-CardLevelOne.propTypes = {
+CardLevelTri.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any.isRequired).isRequired,
   updateDataInMemory: PropTypes.func.isRequired,
 };
-
-export default CardLevelOne;
+export default CardLevelTri;
