@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route, Routes, Link,
 } from 'react-router-dom';
 import {
-  Navbar, Container, Nav, Col, Row,
+  Navbar, Container, Nav, Col, Row, Button, Modal, ButtonGroup,
 } from 'react-bootstrap';
+import {
+  Chart as ChartJS, ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+// eslint-disable-next-line import/no-unresolved
+import { Bar } from 'react-chartjs-2';
 import TaskPage from './pages/TaskPage';
 import NoteiDB from '../data/dataNote';
 import DataContext from '../contexts/dataFromDatabase';
+import Summary from './pages/Summary';
+import HelperData from '../utility/DataForDashboard';
+
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 function App() {
   const [dataFromDatabase, setDataFromDatabase] = useState();
@@ -15,10 +38,14 @@ function App() {
   useState(() => {
     async function getDataFromDatabase() {
       const object = {
-        level_1: await NoteiDB.getAllNote(1),
-        level_2: await NoteiDB.getAllNote(2),
-        level_3: await NoteiDB.getAllNote(3),
-        level_4: await NoteiDB.getAllNote(4),
+        // eslint-disable-next-line max-len
+        level_1: (await NoteiDB.getAllNote(1)).filter((item) => new Date(item.create_date).toDateString() === new Date().toDateString()),
+        // eslint-disable-next-line max-len
+        level_2: (await NoteiDB.getAllNote(2)).filter((item) => new Date(item.create_date).toDateString() === new Date().toDateString()),
+        // eslint-disable-next-line max-len
+        level_3: (await NoteiDB.getAllNote(3)).filter((item) => new Date(item.create_date).toDateString() === new Date().toDateString()),
+        // eslint-disable-next-line max-len
+        level_4: (await NoteiDB.getAllNote(4)).filter((item) => new Date(item.create_date).toDateString() === new Date().toDateString()),
       };
       setDataFromDatabase(object);
     }
@@ -28,15 +55,6 @@ function App() {
   return (
     <div>
       <Container>
-        {/* <Row>
-          <Col>
-            <button type="button">Yesterday</button>
-
-          </Col>
-          <Col>
-            <button type="button">Tomorrow</button>
-          </Col>
-        </Row> */}
         <Row>
           {dataFromDatabase === undefined ? null : (
             <DataContext.Provider value={dataFromDatabase}>
@@ -50,31 +68,97 @@ function App() {
   );
 }
 function AppContainer() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Weeks',
+      },
+    },
+  };
+  const pastWeek = [...Array(7).keys()].map((days) => new Date(Date.now() - 86400000 * days));
+  const labels = pastWeek.map((item) => item.toDateString()).reverse();
+  const [data, setData] = useState();
+  useEffect(() => {
+    async function getDataFromDatabase() {
+      const objDataFoBarChart = await HelperData.init();
+      setData({
+        labels,
+        datasets: [
+          {
+            label: 'Do it now',
+            data: [...objDataFoBarChart.level1.map((item) => item.count)],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+          {
+            label: 'Schedule it',
+            data: [...objDataFoBarChart.level2.map((item) => item.count)],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 132, 99, 0.5)',
+          },
+          {
+            label: 'Delegate it',
+            data: [...objDataFoBarChart.level3.map((item) => item.count)],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(99, 255, 132, 0.5)',
+          },
+          {
+            label: 'Delete it',
+            data: [...objDataFoBarChart.level4.map((item) => item.count)],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(132, 99, 255, 0.5)',
+          },
+        ],
+      });
+    }
+    getDataFromDatabase();
+  }, []);
   return (
     <>
-      <main>
-        <header>
-          {/* <nav>
-      <ul>
-        <li id="home-click"><Link to="/">Home</Link></li>
-        <li><Link to="/archive">Archive</Link></li>
-      </ul>
-    </nav> */}
-          <Navbar bg="light" expand="lg">
+      <header>
+        <Navbar bg="light" expand="lg">
+          <Container>
+            <Navbar.Brand>BoosTask</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Link className="nav-link" to="/" role="button">Home </Link>
+              </Nav>
+            </Navbar.Collapse>
+            <Nav>
+              <Button variant="light" onClick={handleShow}>Report</Button>
+            </Nav>
+          </Container>
+        </Navbar>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Activity Summary</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Container>
-              <Navbar.Brand>BoosTask</Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                  <Nav.Link href="/">Home</Nav.Link>
-                  <Nav.Link href="/archive">Archive</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
+              <Row>
+                <Col>
+                  {data === undefined ? null
+                    : <Bar options={options} data={data} role="img" aria-label="progress" />}
+                </Col>
+              </Row>
             </Container>
-          </Navbar>
-        </header>
+          </Modal.Body>
+        </Modal>
+      </header>
+      <main>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/summary" element={<Summary />} />
         </Routes>
       </main>
       <footer className="bg-light text-center text-lg-start">

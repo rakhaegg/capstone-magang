@@ -19,21 +19,11 @@ function AlertContainer({ item, updateDataInMemory }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setDateRightNow(new Date());
-      if (startTaskHours === countRef.current.getHours()
-        && startTaskMinutes === countRef.current.getMinutes()
-      ) {
-        showModalShow(true);
-        clearInterval(interval);
-      }
+
       if ((startTaskHours <= countRef.current.getHours())) {
-        console.log('here');
-        if (startTaskMinutes < countRef.current.getMinutes()) {
-          console.log('here');
+        if (startTaskMinutes <= countRef.current.getMinutes()) {
           showModalShow(true);
           clearInterval(interval);
-        } else {
-          clearInterval(interval);
-          showModalShow(true);
         }
       }
     }, 1000);

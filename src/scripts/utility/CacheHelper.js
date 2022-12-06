@@ -3,7 +3,6 @@ import CONFIG from '../global/config';
 const CacheHelper = {
   async cachingAppShell(requests) {
     const cache = await this._openCache();
-    console.log(requests);
     /**
      * Membuat request kirim ke server dan menyimpan
      * response ke dalam cache
@@ -21,7 +20,6 @@ const CacheHelper = {
       .map((filterName) => caches.delete(filterName));
   },
   async _fetchRequest(request) {
-    
     const response = await fetch(request);
     if (!response || response.status !== 200) {
       return response;

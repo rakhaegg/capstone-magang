@@ -37,3 +37,16 @@ button:focus {
     border: 0.0625rem solid transparent;
     box-shadow: 0 0 0 0.125rem #fff, 0 0 0 0.2rem var(--dark-color-bg);
   }
+
+.bar{
+
+    /* Add your code below this line */
+    margin: 2px;
+    
+    /* Add your code above this line */
+    display: inline-block;
+    background-color: blue;
+}
+.bar:hover{
+    fill:brown
+}

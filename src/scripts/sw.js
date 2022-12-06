@@ -20,20 +20,16 @@ const assetsToCache = [
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 
-  console.log('Penyimpanan request ke Caches API');
   event.waitUntil(CacheHelper.cachingAppShell([...assetsToCache]));
   // TODO: Caching App Shell Resource
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Activating Service Worker ...');
   event.waitUntil(CacheHelper.deleteOldCache());
   // TODO: Delete old caches
 });
 
 self.addEventListener('fetch', (event) => {
-  console.log('fetch');
-  console.log(event.request);
 
   event.respondWith(CacheHelper.revalidateCache(event.request));
   // TODO: Add/get fetch request to/from caches
