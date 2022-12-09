@@ -5,14 +5,50 @@
     --dark-color-bg: rgb(55, 65, 81);
     --grey-color: rgb(107, 114, 128);
     --leading: 0.025em;
+
   }
+*{
+    font-family: "Nunito", sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+/* navbar */
+.navbar{
+    background-color: white;
+}
+
+.navbrand{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+/* card */
+
 .card{
+    color: white;
+    background-color: rgba(255, 255, 255,  0.4);
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(50px);
+    backdrop-filter: blur(50px);
+    margin-top: 10px;
+}
+.card-title {
+   color: brown;
+  }
+.card-subtitle {
+    color: black;
+  }
+.card-text{
     color: black;
 }
-.child-card{
-    height: 300px;
 
+.containermain{
+    background: #007991; 
+    background: linear-gradient(to left, #78ffd6, #007991); 
 }
+
+
+
 .list-item{
     border: 1px solid black;
     background-color: white;
@@ -32,6 +68,7 @@
     font-size: large;
     font-weight: 700;
 } */
+
 button:focus {
     outline: none;
     border: 0.0625rem solid transparent;
@@ -49,4 +86,56 @@ button:focus {
 }
 .bar:hover{
     fill:brown
+}
+
+
+
+/* Card 1 */
+
+.btn{
+    background-color: transparent;
+    border:none !important;
+}
+
+.btn:hover {
+    background-color: transparent;
+    color: black;
+    border: none !important;
+}
+
+.btn :focus{
+    border: none;
+}
+
+.btn:active{
+    color: black;
+    background-color: transparent;
+    border: none !important;
+}
+.btn:disabled{
+    color: black;
+    background-color: transparent;
+    border: none !important;
+}
+.btn-success {
+    color: rgb(0, 182, 27);
+    font-size: 25px;
+}
+.btn-danger{
+    color: #dc3545;
+    font-size: 25px;
+}
+.btn-primary{
+    color: #007991;
+    font-size: 25px;
+}
+.btn-secondary{
+    gap: 8px;
+    display: flex;
+    align-items: center;
+}
+.btn-light{
+    gap: 8px;
+    display: flex;
+    align-items: center;
 }
